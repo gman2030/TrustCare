@@ -1,0 +1,83 @@
+CREATE DATABASE SAV_System;
+USE SAV_System;
+
+CREATE TABLE Utilisateur (
+    id_Utili INT PRIMARY KEY AUTO_INCREMENT,
+    nom_Utili VARCHAR(100),
+    email_Utili VARCHAR(100) UNIQUE,
+    mot_de_passe VARCHAR(200),
+    adresse VARCHAR(200),
+    type_compte ENUM('client','agent') NOT NULL
+);
+
+
+CREATE TABLE Produit (
+    id_article INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100),
+    type_produit VARCHAR(100),
+    marque VARCHAR(100),
+    caracteristiques TEXT
+);
+
+
+CREATE TABLE Produit_Serial (
+    id_serial INT PRIMARY KEY AUTO_INCREMENT,
+    numero_serial VARCHAR(100) UNIQUE,
+    id_article INT,
+    date_achat DATE,
+    duree_garantie INT,
+    FOREIGN KEY (id_article) REFERENCES Produit(id_article)
+);
+
+
+CREATE TABLE Garantie (
+    id_garantie INT PRIMARY KEY AUTO_INCREMENT,
+    id_serial INT,
+    date_expiration DATE,
+    statut ENUM('valide','expire'),
+    FOREIGN KEY (id_serial) REFERENCES Produit_Serial(id_serial)
+);
+
+
+CREATE TABLE Stock (
+    id_stock INT PRIMARY KEY AUTO_INCREMENT,
+    id_article INT,
+    quantite_disponible INT,
+    emplacement VARCHAR(100),
+    FOREIGN KEY (id_article) REFERENCES Produit(id_article)
+);
+
+
+CREATE TABLE Service_Request (
+    id_request INT PRIMARY KEY AUTO_INCREMENT,
+    id_user INT,
+    id_serial INT,
+    type_service ENUM('صيانة','إرجاع','استبدال','استشارة') NOT NULL,
+    description TEXT,
+    date_demande DATE,
+    statut ENUM('قيد_المعالجة','مقبول','مرفوض','مكتمل') DEFAULT 'قيد_المعالجة',
+    FOREIGN KEY (id_user) REFERENCES Utilisateur(id_Utili),
+    FOREIGN KEY (id_serial) REFERENCES Produit_Serial(id_serial)
+);
+
+
+CREATE TABLE Service_History (
+    id_history INT PRIMARY KEY AUTO_INCREMENT,
+    id_request INT,
+    agent_id INT,
+    date_action DATETIME,
+    action VARCHAR(200),
+    FOREIGN KEY (id_request) REFERENCES Service_Request(id_request),
+    FOREIGN KEY (agent_id) REFERENCES Utilisateur(id_Utili)
+);
+
+
+CREATE TABLE Retour (
+    id_retour INT PRIMARY KEY AUTO_INCREMENT,
+    id_request INT,
+    raison VARCHAR(200),
+    quantite INT,
+    date_retour DATE,
+    statut ENUM('مقبول','مرفوض','قيد_المعالجة') DEFAULT 'قيد_المعالجة',
+    FOREIGN KEY (id_request) REFERENCES Service_Request(id_request)
+);
