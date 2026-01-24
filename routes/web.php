@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-
-
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
@@ -15,7 +13,7 @@ Route::get('/login-sign-up', [AuthController::class, 'showForm'])->name('login.v
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
+Route::get('/search-product/{sn}', [App\Http\Controllers\HomeController::class, 'searchProduct']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -47,15 +45,15 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::get('/create-test-worker', function () {
     $worker = App\Models\User::updateOrCreate(
-        ['email' => 'worker@gmail.com'], 
+        ['email' => 'worker@gmail.com'],
         [
             'name' => 'worker One',
-            'password' => Hash::make('worker123'), 
+            'password' => Hash::make('worker123'),
             'role' => 'worker',
             'phone' => '111111'
         ]
     );
     return "Worker Created! You can now login with: email: ahmed.worker@example.com | password: 12345678";
 });
+Route::post('/admin/products/store', [AdminController::class, 'storeProduct'])->name('admin.product.store');
 
-                  

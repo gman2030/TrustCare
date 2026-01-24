@@ -14,10 +14,12 @@ class Message extends Model
         'user_id',
         'subject',
         'content',
+        'warranty_image',
         'status',
         'worker_name',
         'admin_reply'
     ];
+   
 
     // علاقة الرسالة بالمستخدم (صاحب الرسالة)
     public function user()
