@@ -1,0 +1,173 @@
+/* تحسينات عامة للجسم */
+.main-content {
+    background-color: #f0f2f5;
+    min-height: 100vh;
+    padding: 40px !important;
+}
+
+/* حاوية النموذج */
+.form-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    border: none;
+}
+
+/* Container for the table */
+.inventory-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Custom Table Styling */
+.custom-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    /* المسافة بين الصفوف */
+}
+
+.custom-table thead th {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    padding: 15px;
+    border: none;
+}
+
+.custom-table tbody tr {
+    background-color: #ffffff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.custom-table tbody tr:hover {
+    transform: scale(1.01);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.custom-table td {
+    padding: 15px;
+    vertical-align: middle;
+    color: #2d3748;
+    border-top: 1px solid #edf2f7;
+    border-bottom: 1px solid #edf2f7;
+}
+
+/* Status Badges */
+.badge-stock {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-ok {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-low {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Product Image Thumbnail */
+.product-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid #e2e8f0;
+}
+.btn-edit-action {
+    background-color: #f1f5f9;
+    color: #1b2d95;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-edit-action:hover {
+    background-color: #1b2d95;
+    color: white;
+    box-shadow: 0 4px 12px rgba(27, 45, 149, 0.2);
+}
+/* العناوين */
+.form-header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 20px;
+}
+
+.form-header h2 {
+    color: #1b2d95;
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+/* تنسيق حقول الإدخال ومنع التداخل */
+.input-group-custom {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group-custom label {
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.input-group-custom input {
+    padding: 15px 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+}
+
+.input-group-custom input:focus {
+    border-color: #1b2d95;
+    background: #fff;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(27, 45, 149, 0.1);
+}
+
+/* زر الحفظ */
+.btn-submit-custom {
+    background: #1b2d95;
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 18px;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-submit-custom:hover {
+    background: #142170;
+    transform: translateY(-2px);
+}

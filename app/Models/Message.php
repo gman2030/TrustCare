@@ -19,11 +19,12 @@ class Message extends Model
         'worker_name',
         'admin_reply'
     ];
-   
+
 
     // علاقة الرسالة بالمستخدم (صاحب الرسالة)
     public function user()
     {
-        return $this->belongsTo(User::class);
+         return $this->belongsTo(User::class, 'user_id');
+
     }
 }

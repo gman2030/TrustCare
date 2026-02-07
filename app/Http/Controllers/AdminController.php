@@ -4,61 +4,72 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Message;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-   public function dashboard() {
-    // جيب معلومات من db
-    $messages = Message::with('user')->latest()->get();
+    /**
+     * --- قسم الأدمن (Admin Section) ---
+     */
 
-    foreach ($messages as $msg) {
-        // ns
-        $parts = explode(': ', $msg->subject);
-        $serial = isset($parts[1]) ? trim($parts[1]) : null;
-        $msg->extracted_sn = $serial;
+    // عرض جميع الطلبات للأدمن
+    public function dashboard()
+    {
+        $messages = Message::with('user')->latest()->get();
 
-        //نتاع صورة المنتج
-        if ($serial) {
-            $product = Product::where('serial_number', $serial)->first();
-            $msg->product_image = $product ? $product->image : null;
-        } else {
-            $msg->product_image = null;
+        foreach ($messages as $msg) {
+            $parts = explode(': ', $msg->subject);
+            $msg->extracted_sn = isset($parts[1]) ? trim($parts[1]) : 'N/A';
         }
+
+        return view('admin.dashboard', compact('messages'));
     }
 
-    return view('admin.dashboard', compact('messages'));
-}
-    // تتعاود
-    public function assignWorker(Request $request, $id) {
+    // عرض العمال والتحكم بهم
+    public function workersPage()
+    {
+        $workers = User::where('role', 'worker')->get();
+        return view('admin.workers-control', compact('workers'));
+    }
+
+    // إسناد مهمة لعامل
+    public function assignTask(Request $request)
+    {
         $request->validate([
-            'worker_name' => 'required|string'
+            'customer_name' => 'required',
+            'worker_id' => 'required'
         ]);
 
-        $message = Message::findOrFail($id);
-        $message->update([
-            'worker_name' => $request->worker_name,
-            'status' => 'Assigned' // 
-        ]);
+        $worker = User::find($request->worker_id);
+        $customer = User::where('name', $request->customer_name)->first();
 
-        return back()->with('success', 'Maintenance worker ' . $request->worker_name . ' has been assigned.');
+        if (!$worker || !$customer) {
+            return back()->with('error', 'Worker or Customer not found.');
+        }
+
+        $message = Message::where('user_id', $customer->id)->latest()->first();
+
+        if ($message) {
+            $message->update([
+                'worker_name' => $worker->name,
+                'status' => 'Assigned'
+            ]);
+            return back()->with('success', "Task successfully assigned to " . $worker->name);
+        }
+
+        return back()->with('error', 'No active request found for this customer.');
     }
+    public function deleteUser($id)
+    {
+        $user = \App\Models\User::findOrFail($id);
 
-    // دالة حذف المستخدم (Kick)
-    public function deleteUser($id) {
-        // حماية: منع الأدمن من حذف نفسه
-        if (Auth::id() == $id) {
-            return back()->with('error', 'You cannot delete your own admin account!');
+        // منع الأدمن من مسح نفسه بالخطأ
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'You cannot delete your own account!');
         }
 
-        $user = User::find($id);
-        if ($user) {
-            $user->delete();
-            return back()->with('success', 'User and all their records removed successfully.');
-        }
-
-        return back()->with('error', 'User not found.');
+        $user->delete();
+        return back()->with('success', 'User deleted successfully.');
     }
 }

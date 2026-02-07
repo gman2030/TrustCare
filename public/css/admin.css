@@ -215,8 +215,116 @@
     max-width: 900px;
     border-radius: 12px;
 
-    
+
     max-height: 85vh;
     overflow-y: auto;
     position: relative;
 }
+.admin-profile {
+    border-right: 3px solid var(--accent-pink);
+    margin: 0 10px 20px 10px;
+    border-radius: 8px;
+}
+
+.admin-profile i {
+    color: var(--accent-pink);
+}
+
+.sidebar-header img {
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); /* تعطي ظل خفيف للوقو ليبرز */
+}
+/* Sidebar Setup (English - Left Side) */
+.sidebar {
+    width: 280px;
+    background: #0f172a; /* Darker professional color */
+    height: 100vh;
+    color: #fff;
+    position: fixed;
+    left: 0; /* Changed to Left for English */
+    top: 0;
+    direction: ltr; /* English Direction */
+}
+
+/* Logo Styling */
+.logo-wrapper {
+    background: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+}
+
+.logo-wrapper img {
+    width: 40px;
+}
+
+.brand-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.admin-badge {
+    font-size: 0.7rem;
+    background: #e91e63;
+    padding: 2px 8px;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+/* Admin Profile Card */
+.admin-profile {
+    background: rgba(255, 255, 255, 0.05);
+    margin: 20px;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.admin-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.admin-avatar {
+    width: 40px;
+    height: 40px;
+    background: #e91e63;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.admin-name { font-weight: 600; font-size: 0.9rem; display: block; }
+.admin-status { font-size: 0.7rem; color: #10b981; }
+
+.logout-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logout-btn:hover { background: #ef4444; border-color: #ef4444; }
+
+/* Menu Labels */
+.menu-label {
+    padding: 0 25px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+

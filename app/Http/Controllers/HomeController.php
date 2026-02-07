@@ -17,18 +17,20 @@ class HomeController extends Controller
 
 
     public function searchProduct($sn) {
-        $product = Product::where('serial_number', $sn)->first();
-        if ($product) {
-            return response()->json([
-                'success' => true,
-                'product' => [
-                    'name' => $product->name,
-                    'image' => asset('storage/' . $product->image)
-                ]
-            ]);
-        }
-        return response()->json(['success' => false]);
+    $product = Product::where('serial_number', $sn)->first();
+
+    if ($product) {
+        return response()->json([
+            'success' => true,
+            'product' => [
+                'name' => $product->name,
+                // تغيير المسار هنا من storage إلى uploads/products
+                'image' => $product->image ? asset('uploads/products/' . $product->image) : asset('assets/no-image.png')
+            ]
+        ]);
     }
+    return response()->json(['success' => false]);
+}
 
 
 public function sendMessage(Request $request) {

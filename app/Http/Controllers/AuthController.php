@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
-    public function showForm() {
+    public function showForm()
+    {
         return view('login-sign-up');
     }
 
 
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $request->validate([
             'name' => 'required|string|max:30',
             'email' => 'required|email|unique:users',
@@ -35,38 +37,39 @@ class AuthController extends Controller
     }
 
 
-   public function login(Request $request) {
-    $credentials = $request->validate([
-        'email'    => 'required|email',
-        'password' => 'required',
-    ]);
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
 
 
-    
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
 
-        $user = Auth::user();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            $user = Auth::user();
 
 
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+            if ($user->role === 'worker') {
+                return redirect()->route('worker.dashboard');
+            }
+            if ($user->role === 'supply') {
+                return redirect()->route('supply.dashboard');
+            }
+            return redirect()->intended('/home');
         }
 
-
-        if ($user->role === 'worker') {
-            return redirect()->route('worker.dashboard');
-        }
-
-
-        return redirect()->intended('/home');
+        return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
     }
 
-    return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
-}
 
-
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
