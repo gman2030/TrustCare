@@ -57,13 +57,15 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-7" id="sparePartsSection" style="display: none;">
                         <div class="mono-card shadow-sm border-0 h-100 animate-fade-in">
                             <div class="card-body p-4 p-xl-5">
-                                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-                                    <h5 class="fw-bold text-dark m-0">Spare Parts</h5>
-                                    <button type="button" class="btn-close-mono" onclick="toggleSpareParts()">×</button>
+                                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                                    <h5 class="fw-bold text-dark m-0">
+                                        <i class="fas fa-tools me-2 opacity-50"></i>Spare Parts
+                                    </h5>
+                                    <button type="button" class="btn-close-mono" onclick="toggleSpareParts()"
+                                        aria-label="Close">×</button>
                                 </div>
 
                                 <form action="{{ route('spare-parts.store') }}" method="POST"
@@ -71,55 +73,160 @@
                                     @csrf
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                                    <div class="row g-3 mb-4 justify-content-center">
-                                        <div class="col-12">
-                                            <div class="part-upload-box mx-auto">
-                                                <input type="file" name="part_image" id="part-upload" hidden required
+                                    <div class="row g-4">
+                                        <div class="col-12 text-center mb-2">
+                                            <div class="image-drop-mono mx-auto shadow-sm"
+                                                style="width: 110px; height: 110px; position: relative;">
+                                                <input type="file" name="part_image" id="part-upload" hidden
                                                     onchange="previewPart(this)">
-                                                <label for="part-upload" class="image-drop-mono">
-                                                    <div id="plus-icon-container">
-                                                        <span class="plus-symbol">+</span>
-                                                        <p class="small text-muted m-0">Add Photo</p>
-                                                    </div>
-                                                    <img id="part-preview-img" src="#" alt="Preview"
-                                                        style="display:none;">
+                                                <label for="part-upload"
+                                                    style="width: 150px; height: 150px; border: 2px dashed #ccc; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background: #f9f9f9;">
+                                                    <img id="part-preview-img" src="#"
+                                                        style="display:none; max-width: 100%; max-height: 100%; object-fit: contain;">
+
+                                                    <span id="plus-icon" style="font-size: 2rem; color: #999;">+</span>
                                                 </label>
+
+                                                <input type="file" name="part_image" id="part-upload" hidden
+                                                    onchange="previewPart(this)">
                                             </div>
+                                            <p class="text-muted small mt-2">Upload Part Image</p>
                                         </div>
-                                        <br>
+
                                         <div class="col-12">
                                             <div class="mono-field">
-                                                <label>Component Name</label>
-                                                <input type="text" name="part_name" placeholder="Enter component name..."
-                                                    required>
+                                                <label class="form-label small fw-bold text-uppercase">Component
+                                                    Name</label>
+                                                <input type="text" name="part_name" class="form-control"
+                                                    placeholder="e.g. Engine Valve" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="mono-field">
+                                                <label class="form-label small fw-bold text-uppercase">Quantity</label>
+                                                <input type="number" name="quantity" class="form-control" value="0"
+                                                    min="0" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="mono-field">
+                                                <label class="form-label small fw-bold text-uppercase">Price (Unit)</label>
+                                                <div class="input-group">
+                                                    <input type="number" name="price" step="0.01"
+                                                        class="form-control" value="0.00" min="0" required>
+                                                </div>
                                             </div>
                                         </div>
                                         <br>
-                                        <div class="col-12 d-flex justify-content-center mt-4">
-                                            <button type="submit" class="btn-mono-dark">Add Component</button>
+                                        <div class="col-12 text-center mt-4">
+                                            <button type="submit" class="btn-mono-dark w-100 py-3 shadow-sm">
+                                                <i class="fas fa-plus-circle me-2"></i>ADD_TO_INVENTORY
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
+                                <br>
+                                <div class="parts-list-mono border-top mt-5 pt-4">
+                                    <h2 class="fw-bold mb-3  text-muted text-uppercase">Existing Components</h2>
+                                    <br>
+                                    <div class="parts-scroll-area" style="max-height: 350px; overflow-y: auto;">
 
-                                <div class="parts-list-mono border-top pt-4">
-                                    @forelse($product->spareParts as $part)
-                                        <div
-                                            class="mono-part-item d-flex align-items-center justify-content-between p-2 mb-2 border-bottom">
-                                            <div class="d-flex align-items-center">
-                                                <img src="{{ asset('uploads/parts/' . $part->image) }}"
-                                                    class="rounded me-3 border" width="45" height="45"
-                                                    style="object-fit: cover;">
-                                                <span class="fw-bold text-dark small">{{ $part->name }}</span>
-                                            </div>
-                                            <form action="{{ route('spare-parts.destroy', $part->id) }}" method="POST">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="btn-del-mono"
-                                                    onclick="return confirm('Remove?')">Remove</button>
-                                            </form>
+                                    </div>
+                                    <div class="parts-list-mono border-top mt-5 pt-4">
+                                        <h6 class="fw-bold mb-3 small text-muted text-uppercase">Existing Components</h6>
+
+                                        <div class="table-responsive">
+                                            <table class="table custom-show-table align-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 15%;">Spare Part</th>
+                                                        <th style="width: 15%;">Name</th>
+                                                        <th class="text-center" style="width: 15%;">Quantity</th>
+                                                        <th class="text-center" style="width: 15%;">The Condition</th>
+                                                        <th class="text-center" style="width: 15%;">Unit Price</th>
+                                                        <th class="text-center"></th>
+                                                        {{-- حقل زر الحذف --}}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($product->spareParts as $part)
+                                                        <tr>
+                                                            <td>
+                                                                <div>
+                                                                    <img src="{{ $part->image ? asset('uploads/parts/' . $part->image) : asset('assets/no-image.png') }}"
+                                                                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="fw-bold text-dark fs-6">
+                                                                    {{ $part->name }}
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span
+                                                                    class="qty-badge-simple p-2 rounded bg-light border fw-bold small"
+                                                                    style="width: 20%;">
+                                                                    {{ $part->quantity }} pcs
+                                                                </span>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @if ($part->quantity >= 7)
+                                                                    <span
+                                                                        class="badge-status status-available text-success border border-success px-3 py-1 rounded-pill"
+                                                                        style="font-size: 11px; background: #e8f5e9;">
+                                                                        <i class="fas fa-check-circle me-1"></i> Available
+                                                                    </span>
+                                                                @elseif($part->quantity <= 6 && $part->quantity > 0)
+                                                                    <span
+                                                                        class="badge-status status-limited text-warning border border-warning px-3 py-1 rounded-pill"
+                                                                        style="font-size: 11px; background: #fff8e1;">
+                                                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                                                        Limited
+                                                                    </span>
+                                                                @else
+                                                                    <span
+                                                                        class="badge-status status-unavailable text-danger border border-danger px-3 py-1 rounded-pill"
+                                                                        style="font-size: 11px; background: #ffebee;">
+                                                                        <i class="fas fa-times-circle me-1"></i>
+                                                                        Unavailable
+                                                                    </span>
+                                                                @endif
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span class="fw-bold text-dark fs-6" style="width: 20%">
+                                                                    ${{ number_format($part->price, 2) }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="text-end">
+                                                                <form
+                                                                    action="{{ route('spare-parts.destroy', $part->id) }}"
+                                                                    method="POST" class="m-0 d-inline">
+                                                                    @csrf @method('DELETE')
+                                                                    <button type="submit"
+                                                                        class="btn btn-link text-danger p-0"
+                                                                        onclick="return confirm('Remove this component?')"
+                                                                        style="text-decoration: none;">
+                                                                        <i class="fas fa-trash-alt"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="6" class="text-center py-5">
+                                                                <i
+                                                                    class="fas fa-box-open fa-3x opacity-25 mb-3 d-block text-muted"></i>
+                                                                <p class="text-muted fw-bold">No components linked to this
+                                                                    asset yet.</p>
+                                                            </td>
+                                                        </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
                                         </div>
-                                    @empty
-                                        <p class="text-muted text-center small py-3">No components found.</p>
-                                    @endforelse
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -144,6 +251,14 @@
         .mono-card {
             background: #ffffff;
             border: 1px solid #e9ecef !important;
+        }
+
+        .custom-show-table th,
+        .custom-show-table td {
+            text-align: center;
+            /* توسيط أفقي */
+            vertical-align: middle;
+            /* توسيط عمودي */
         }
 
         /* Inputs */
@@ -174,8 +289,7 @@
         /* Buttons */
         .btn-mono-dark {
             background: fff;
-            color: #212529
-            border: none;
+            color: #212529 border: none;
             padding: 12px 30px;
             border-radius: 10px;
             font-weight: 600;
@@ -184,13 +298,12 @@
 
         .btn-mono-dark:hover {
             background: #0a0067;
-             color: #fff
+            color: #fff
         }
 
         .btn-mono-light {
             background: fff;
-            color: #212529
-            border: none;
+            color: #212529 border: none;
             padding: 12px 30px;
             border-radius: 10px;
             font-weight: 600;
@@ -199,7 +312,7 @@
 
         .btn-mono-light:hover {
             background: #1b2d95;
-             color: #fff
+            color: #fff
         }
 
         /* Part Upload Box (The Large Square with Plus) */
@@ -217,7 +330,8 @@
             overflow: hidden;
             transition: 0.3s;
         }
-        .image-drop-mono img{
+
+        .image-drop-mono img {
             object-fit: cover;
         }
 
@@ -301,6 +415,50 @@
             animation: fadeIn 0.4s;
         }
 
+        /* تنسيقات إضافية لتحسين مظهر الجدول المخصص */
+        .custom-show-table {
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            table-layout: auto;
+        }
+
+        .custom-show-table thead th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            padding: 15px 10px;
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+        }
+
+        .custom-show-table tbody tr {
+            transition: all 0.2s;
+        }
+
+        .custom-show-table tbody tr:hover {
+            background-color: #fdfdfd;
+            transform: scale(1.002);
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .qty-badge-simple {
+            color: #495057;
+            display: inline-block;
+            min-width: 70px;
+        }
+
+        .custom-show-table td:last-child,
+        .custom-show-table th:last-child {
+            /* يضمن أن عمود الحذف يلتصق بنهاية الجدول */
+            padding-right: 15px;
+            text-align: right;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -330,14 +488,16 @@
 
         function previewPart(input) {
             if (input.files && input.files[0]) {
-                let reader = new FileReader();
-                let preview = document.getElementById('part-preview-img');
-                let icon = document.getElementById('plus-icon-container');
-                reader.onload = e => {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    icon.style.display = 'none';
-                };
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    // إظهار الصورة وتكبيرها لتملأ المساحة المتاحة دون قص
+                    const img = document.getElementById('part-preview-img');
+                    const icon = document.getElementById('plus-icon');
+
+                    img.src = e.target.result;
+                    img.style.display = 'block'; // إظهار الصورة
+                    icon.style.display = 'none'; // إخفاء علامة الزائد لكي لا تشوه الصورة
+                }
                 reader.readAsDataURL(input.files[0]);
             }
         }

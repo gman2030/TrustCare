@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SparePart extends Model
 {
-    protected $fillable = ['product_id', 'name', 'image', 'quantity'];
+    protected $fillable = ['product_id', 'name', 'image', 'quantity','price'];
 
     public function product()
     {

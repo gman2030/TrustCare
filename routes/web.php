@@ -55,7 +55,8 @@ Route::middleware(['auth'])->prefix('supply-chain')->group(function () {
     // التعديل (تم الربط بالكنترولر الصحيح Supplychain_controller)
     Route::get('/edit/{id}', [Supplychain_controller::class, 'edit'])->name('supply.edit');
     Route::put('/update/{id}', [Supplychain_controller::class, 'update'])->name('supply.update');
-
+    // مسار حذف قطعة غيار محددة
+    Route::delete('/spare-parts/destroy/{id}', [Supplychain_controller::class, 'destroySparePart'])->name('spare-parts.destroy');
     // حفظ قطع الغيار (الزر الفرعي في صفحة التعديل)
     Route::post('/spare-parts/store', [Supplychain_controller::class, 'storeSparePart'])->name('spare-parts.store');
 
@@ -64,6 +65,8 @@ Route::middleware(['auth'])->prefix('supply-chain')->group(function () {
 
     // تحديث المخزون السريع (الكمية)
     Route::post('/update-stock/{id}/{action}', [Supplychain_controller::class, 'updateStock'])->name('supply.updateStock');
+    // مسار عرض تفاصيل المنتج وقطع الغيار
+    Route::get('/show/{id}', [Supplychain_controller::class, 'show'])->name('supply.show');
 });
 
 // --- روابط المساعدة (Development) ---
