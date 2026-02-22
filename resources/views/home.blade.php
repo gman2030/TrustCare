@@ -9,26 +9,6 @@
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     <link rel="stylesheet" href="{{ asset('css/request-flow.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .step-box {
-            transition: 0.4s;
-        }
-
-        .product-preview img {
-            cursor: pointer;
-            transition: 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .product-preview img:hover {
-            transform: scale(1.05);
-            border-color: #1b2d95;
-        }
-
-        .overlay-text {
-            pointer-events: none;
-        }
-    </style>
 </head>
 
 <body>
@@ -146,7 +126,6 @@
             </table>
         </div>
     </div>
-
     <script>
         function checkProduct() {
             let sn = document.getElementById('sn_input').value.trim();
@@ -155,15 +134,19 @@
                 return;
             }
 
-            fetch(`/search-product/${sn}`)
+            // إرسال طلب البحث
+            fetch(`/user/search-product/${sn}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
+                        // إظهار منطقة عرض المنتج
                         document.getElementById('product-display').style.display = 'block';
+
+                        // تحديث البيانات من الـ JSON الواصل من HomeController
                         document.getElementById('p-name').innerText = data.product.name;
                         document.getElementById('p-img').src = data.product.image;
 
-
+                        // إظهار دليل الأخطاء لمنتج معين (اختياري حسب منطقك)
                         let errorGuide = document.getElementById('error-guide');
                         if (sn === "0666456") {
                             errorGuide.style.display = 'block';
@@ -171,6 +154,7 @@
                             errorGuide.style.display = 'none';
                         }
                     } else {
+                        // في حال لم يجد الرقم التسلسلي
                         alert("Warning: Serial number not found in our database.");
                         document.getElementById('product-display').style.display = 'none';
                     }
@@ -180,19 +164,6 @@
                     alert("Connection error during search.");
                 });
         }
-        // مثال للتعامل مع الاستجابة في ملف Blade
-        fetch('/search-product/' + serialNumber)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('product-name').innerText = data.product.name;
-
-                    // تحديث رابط الصورة هنا
-                    let imgTag = document.getElementById('product-image');
-                    imgTag.src = data.product.image;
-                    imgTag.classList.remove('d-none'); // إظهار الصورة إذا كانت مخفية
-                }
-            });
     </script>
 </body>
 

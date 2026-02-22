@@ -87,6 +87,7 @@
     object-fit: cover;
     border: 1px solid #e2e8f0;
 }
+
 .btn-edit-action {
     background-color: #f1f5f9;
     color: #1b2d95;
@@ -104,6 +105,7 @@
     color: white;
     box-shadow: 0 4px 12px rgba(27, 45, 149, 0.2);
 }
+
 /* العناوين */
 .form-header {
     margin-bottom: 30px;
@@ -170,4 +172,162 @@
 .btn-submit-custom:hover {
     background: #142170;
     transform: translateY(-2px);
+}
+
+body {
+    display: flex;
+    margin: 0;
+    background: #f4f7f6;
+    font-family: sans-serif;
+}
+
+.sidebar {
+    width: 250px;
+    background: #1b2d95;
+    height: 100vh;
+    color: white;
+    position: fixed;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-menu {
+    padding: 20px 0;
+}
+
+.sidebar-menu a {
+    display: block;
+    padding: 15px 25px;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 4px solid #e91e63;
+}
+
+.sidebar-menu i {
+    margin-right: 10px;
+    width: 20px;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 30px;
+    width: 100%;
+}
+
+:root {
+    --primary: #1b2d95;
+    /* نفس لون العامل والأدمن */
+    --secondary: #e91e63;
+    --bg-light: #f8fafc;
+    --sidebar-width: 260px;
+}
+
+/* CSS التنسيقات العامة كما هي في تصميمك */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    display: flex;
+}
+
+/* Sidebar Style */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--primary);
+    height: 100vh;
+    position: fixed;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 20px 0;
+    flex-grow: 1;
+}
+
+.sidebar-menu li a,
+.sidebar-menu li button {
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: 0.3s;
+    width: 100%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.sidebar-menu li i {
+    margin-right: 15px;
+    font-size: 18px;
+    width: 25px;
+    text-align: center;
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li a.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-left: 5px solid var(--secondary);
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li a.active,
+.sidebar-menu li button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-left: 5px solid var(--secondary);
+}
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.top-nav {
+    background: white;
+    padding: 15px 30px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.logout-item {
+    margin-top: 129%;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-item button {
+    color: #f87171 !important;
 }

@@ -6,8 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\SparePart;
-use Illuminate\Routing\Controllers\HasMiddleware; 
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+
 class Supplychain_controller extends Controller
 {
 
@@ -82,37 +83,21 @@ class Supplychain_controller extends Controller
     // دالة تحديث المنتج الأساسي
     public function update(Request $request, $id)
     {
+        // 1. جلب المنتج أو إظهار خطأ 404
         $product = Product::findOrFail($id);
-        $product = Product::findOrFail($id);
 
-        // تحديث المنتج الأساسي
-        $product->update([
-            'name' => $request->name,
-            'serial_number' => $request->serial_number,
-        ]);
-
-        // تحديث الكميات والأسعار للقطع الموجودة مسبقاً من الجدول
-        if ($request->has('existing_parts')) {
-            foreach ($request->existing_parts as $partId => $data) {
-                $part = SparePart::where('id', $partId)->first();
-                if ($part) {
-                    $part->update([
-                        'quantity' => $data['quantity'],
-                        'price'    => $data['price'],
-                    ]);
-                }
-            }
-        }
-
+        // 2. التحقق من صحة البيانات (Validation)
         $request->validate([
             'name' => 'required|max:255',
             'serial_number' => 'required|unique:products,serial_number,' . $id,
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
-        $product->name = $request->input('name');
-        $product->serial_number = $request->input('serial_number');
+        // 3. تحديث بيانات المنتج الأساسية
+        $product->name = $request->name;
+        $product->serial_number = $request->serial_number;
 
+        // معالجة الصورة الجديدة للمنتج إن وجدت
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('uploads/products'), $imageName);
@@ -120,9 +105,19 @@ class Supplychain_controller extends Controller
         }
 
         $product->save();
-        return redirect()->route('supply.dashboard')->with('success', 'تم حفظ التعديلات بنجاح!');
-    }
 
+        // 4. تحديث قطع الغيار (الكمية والسعر) من الجدول دفعة واحدة
+        if ($request->has('existing_parts')) {
+            foreach ($request->existing_parts as $partId => $data) {
+                SparePart::where('id', $partId)->update([
+                    'quantity' => $data['quantity'] ?? 0,
+                    'price'    => $data['price'] ?? 0,
+                ]);
+            }
+        }
+
+        return redirect()->route('supply.dashboard')->with('success', 'تم حفظ جميع التعديلات بنجاح!');
+    }
     // دالة إضافة قطعة غيار (التي أضفتها في ملف الروابط)
     public function storeSparePart(Request $request)
     {
@@ -174,5 +169,30 @@ class Supplychain_controller extends Controller
     {
         $product = Product::with('spareParts')->findOrFail($id);
         return view('supplychain.show', compact('product'));
+    }
+    public function updateSparePart(Request $request, $id)
+    {
+        $part = \App\Models\SparePart::findOrFail($id);
+
+        // التحقق من البيانات
+        $request->validate([
+            'quantity' => 'numeric|min:0',
+            'price'    => 'numeric|min:0',
+        ]);
+
+        // تحديث القيم المرسلة فقط
+        $part->update($request->only(['quantity', 'price']));
+
+        return back()->with('success', 'The update was successful.');
+    }
+    public function bulkUpdate(Request $request)
+    {
+        foreach ($request->existing_parts as $id => $data) {
+            SparePart::where('id', $id)->update([
+                'quantity' => $data['quantity'],
+                'price'    => $data['price']
+            ]);
+        }
+        return back()->with('success', 'تم تحديث المخزون بنجاح');
     }
 }

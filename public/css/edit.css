@@ -1,0 +1,131 @@
+ body {
+            background-color: #f8f9fa;
+            color: #212529;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .header-mono {
+            border-bottom: 2px solid #eee;
+        }
+
+        .mono-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef !important;
+        }
+
+        .custom-show-table th,
+        .custom-show-table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .mono-field label {
+            font-size: 13px;
+            font-weight: 800;
+            color: black;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .mono-field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            background: #fdfdfd;
+            font-size: 14px;
+        }
+
+        .mono-field input:focus {
+            outline: none;
+            border-color: #1b2d95;
+            background: #fff;
+        }
+
+        .btn-mono-dark {
+            background: #212529;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-mono-dark:hover {
+            background: #0a0067;
+            color: #fff;
+        }
+
+        .btn-mono-light {
+            background: #fff;
+            color: #212529;
+            border: 1px solid #dee2e6;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-mono-light:hover {
+            background: #1b2d95;
+            color: #fff;
+        }
+
+        .image-drop-mono {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .avatar-preview {
+            width: 110px;
+            height: 110px;
+            position: relative;
+        }
+
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            border-radius: 25px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+
+        .upload-badge-mono {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            background: #212529;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }

@@ -7,58 +7,6 @@
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
      <link rel="icon" type="image/png" href="{{ asset('image/logo-icon.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* Sidebar CSS */
-        body {
-            display: flex;
-            margin: 0;
-            background: #f4f7f6;
-            font-family: sans-serif;
-        }
-
-        .sidebar {
-            width: 250px;
-            background: #1b2d95;
-            height: 100vh;
-            color: white;
-            position: fixed;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar-menu {
-            padding: 20px 0;
-        }
-
-        .sidebar-menu a {
-            display: block;
-            padding: 15px 25px;
-            color: white;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .sidebar-menu a:hover,
-        .sidebar-menu a.active {
-            background: rgba(255, 255, 255, 0.1);
-            border-left: 4px solid #e91e63;
-        }
-
-        .sidebar-menu i {
-            margin-right: 10px;
-            width: 20px;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            padding: 30px;
-            width: 100%;
-        }
-    </style>
 </head>
 
 <body>

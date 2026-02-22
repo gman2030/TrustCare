@@ -303,3 +303,22 @@
   .submit-btn-final:hover {
       background: #152272;
   }
+
+  .step-box {
+      transition: 0.4s;
+  }
+
+  .product-preview img {
+      cursor: pointer;
+      transition: 0.3s;
+      border: 2px solid transparent;
+  }
+
+  .product-preview img:hover {
+      transform: scale(1.05);
+      border-color: #1b2d95;
+  }
+
+  .overlay-text {
+      pointer-events: none;
+  }
