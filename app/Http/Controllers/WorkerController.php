@@ -6,6 +6,8 @@ use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\SparePart;
+use App\Models\SparePartOrder;
 
 class WorkerController extends Controller
 {
@@ -79,5 +81,33 @@ class WorkerController extends Controller
 
         // إرجاع البيانات بصيغة JSON ليفهمها كود الـ JavaScript في الصفحة
         return response()->json($product);
+    }
+   public function storeSpareRequest(Request $request, $productId)
+    {
+        // التأكد من اختيار قطع غيار
+        if (!$request->has('selected_parts')) {
+            return redirect()->back()->with('error', 'Please select at least one part.');
+        }
+
+        $orderItems = [];
+        foreach ($request->selected_parts as $partId) {
+            $part = SparePart::find($partId);
+            // نجمع بيانات القطع المختارة في مصفوفة
+            $orderItems[] = [
+                'id' => $part->id,
+                'name' => $part->name,
+                'image' => $part->image,
+                'quantity' => $request->quantities[$partId] ?? 1,
+            ];
+        }
+
+        // حفظ الطلب
+        SparePartOrder::create([
+            'worker_id' => auth()->id(),
+            'product_id' => $productId,
+            'items' => json_encode($orderItems),
+        ]);
+
+        return redirect()->route('worker.dashboard')->with('success', 'Order sent to Admin successfully!');
     }
 }

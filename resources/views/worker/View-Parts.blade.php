@@ -2,8 +2,7 @@
 
 @section('content')
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/view.css') }}">
 
     <div class="container">
@@ -15,8 +14,7 @@
                 <h1>{{ $product->name }}</h1>
                 <div class="meta-data">
                     <span>
-                        <span class="material-symbols-outlined"
-                            style="vertical-align: middle; font-size: 18px;">barcode_scanner</span>
+                        <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">barcode_scanner</span>
                         S/N: <b>{{ $product->serial_number }}</b>
                     </span>
                 </div>
@@ -25,13 +23,13 @@
 
         <h2 style="margin-bottom: 25px; font-weight: 800;">Pièces de rechange</h2>
 
-        <form action="{{ route('worker.product.view', $product->id) }}" method="GET" id="partsForm">
+        <form action="{{ route('worker.spare.confirm', $product->id) }}" method="POST" id="mainPartsForm">
             @csrf
             <div class="parts-grid">
                 @forelse($spareParts as $part)
-                    <div class="part-card">
+                    <div class="part-card {{ $part->quantity <= 0 ? 'disabled-card' : '' }}">
                         <input type="checkbox" name="selected_parts[]" value="{{ $part->id }}"
-                            class="part-checkbox sr-only">
+                               class="part-checkbox sr-only" {{ $part->quantity <= 0 ? 'disabled' : '' }}>
 
                         <div class="check-mark">
                             <span class="material-symbols-outlined"></span>
@@ -49,13 +47,11 @@
                             <div class="part-name">{{ $part->name }}</div>
                             <div class="part-price">{{ number_format($part->price, 2) }} DZ</div>
 
-                            <div class="quantity-selector"
-                                style="display: none; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ddd;">
-                                <label
-                                    style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Quantité:</label>
+                            <div class="quantity-selector" style="display: none; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ddd;">
+                                <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Quantité:</label>
                                 <input type="number" name="quantities[{{ $part->id }}]" value="1" min="1"
-                                    max="{{ $part->quantity }}" class="qty-input">
-                            </div>
+                                       max="{{ $part->quantity }}" class="qty-input"
+                                       onclick="event.stopPropagation();"> </div>
                         </div>
                     </div>
                 @empty
@@ -64,54 +60,66 @@
                     </div>
                 @endforelse
             </div>
+
             <div class="footer-actions">
                 <div id="selection-status" style="color: var(--primary-color); font-size: 14px; font-weight: 600;">
                     Veuillez sélectionner les pièces.
                 </div>
-                <div class="buttons-group" style="display: flex; gap: 10px;">
-                    <button type="submit" class="btn-confirm">Confirmer</button>
-                </div>
+                <button type="submit" class="btn-confirm" id="submitBtn" disabled>Confirme</button>
             </div>
         </form>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // التعامل مع ضغطة البطاقة
             document.querySelectorAll('.part-card').forEach(card => {
                 card.addEventListener('click', function(e) {
-                    if (e.target.closest('.quantity-selector')) return;
-
                     const checkbox = this.querySelector('.part-checkbox');
-                    if (e.target !== checkbox) {
+                    if (checkbox && !checkbox.disabled) {
                         checkbox.checked = !checkbox.checked;
                         checkbox.dispatchEvent(new Event('change'));
                     }
                 });
             });
 
+            // التعامل مع تغيير حالة الـ Checkbox
             document.querySelectorAll('.part-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
                     const card = this.closest('.part-card');
                     const qtySection = card.querySelector('.quantity-selector');
+                    const qtyInput = card.querySelector('.qty-input');
 
                     if (this.checked) {
                         card.classList.add('is-selected');
                         if (qtySection) qtySection.style.display = 'block';
+                        if (qtyInput) qtyInput.disabled = false; // تفعيل مدخل الكمية عند الاختيار
                     } else {
                         card.classList.remove('is-selected');
                         if (qtySection) qtySection.style.display = 'none';
+                        if (qtyInput) qtyInput.disabled = true; // تعطيله لعدم إرسال بيانات غير مختارة
                     }
                     updateFooterCount();
                 });
             });
 
             function updateFooterCount() {
-                const count = document.querySelectorAll('.part-checkbox:checked').length;
-                const footerText = document.querySelector('.footer-actions div');
+                const checkedBoxes = document.querySelectorAll('.part-checkbox:checked');
+                const count = checkedBoxes.length;
+                const footerText = document.querySelector('#selection-status');
+                const submitBtn = document.querySelector('#submitBtn');
+
                 if (footerText) {
                     footerText.innerHTML = count > 0 ?
                         `<b>${count}</b> types de pièces sélectionnés` :
                         "Veuillez sélectionner les pièces.";
+                }
+
+                // تفعيل أو تعطيل زر التأكيد
+                if (submitBtn) {
+                    submitBtn.disabled = count === 0;
+                    submitBtn.style.opacity = count === 0 ? "0.5" : "1";
+                    submitBtn.style.cursor = count === 0 ? "not-allowed" : "pointer";
                 }
             }
         });

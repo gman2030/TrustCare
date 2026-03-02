@@ -40,7 +40,7 @@
             padding: 0; text-decoration: underline; text-underline-offset: 4px;
         }
 
-        /* تنسيق أزرار الأكشن */
+   
         .action-group {
             display: flex;
             gap: 10px;

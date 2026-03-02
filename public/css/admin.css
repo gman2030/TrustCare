@@ -381,6 +381,46 @@ body {
     font-family: sans-serif;
 }
 
+/* تنسيق روابط المنيو */
+.sidebar-menu li a,
+.sidebar-menu li button {
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.7);
+    /* لون أبيض شفاف قليلاً */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    /* انتقال ناعم */
+    width: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    border-left: 4px solid transparent;
+    /* خط شفاف افتراضياً لمنع الاهتزاز */
+}
+
+/* تأثير الـ Hover (عند مرور الفأرة) */
+.sidebar-menu li a:hover,
+.sidebar-menu li button:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    /* خلفية بيضاء خفيفة جداً */
+    color: #ffffff !important;
+    /* النص يصبح أبيض ناصع */
+    border-left: 4px solid #e91e63 !important;
+    /* ظهور الخط الوردي */
+    padding-left: 30px;
+    /* حركة بسيطة لليمين لتعطي جمالية */
+}
+
+/* تأثير الـ Active (عندما تكون في الصفحة حالياً) */
+.sidebar-menu li a.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-left: 4px solid #e91e63;
+}
+
 .sidebar {
     width: 250px;
     background: #1b2d95;

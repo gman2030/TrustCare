@@ -10,8 +10,8 @@ use App\Http\Controllers\Supplychain_controller;
 use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\viewcontroller;
-
-
+use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\WorkerProductController;
 Route::get('/login-sign-up', [AuthController::class, 'showForm'])->name('login.view');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -75,4 +75,7 @@ Route::get('/setup-admin', function () {
 });
 Route::put('/spare-parts/bulk-update', [Supplychain_controller::class, 'bulkUpdate'])->name('spare-parts.bulkUpdate');
 Route::get('/worker/product-view/{id}', [viewcontroller::class, 'show'])->name('worker.product.view');
+Route::get('/admin/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
+Route::post('/worker/product/{id}/store', [WorkerController::class, 'storeSpareRequest'])->name('worker.spare.confirm');
+Route::get('/admin/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
 
