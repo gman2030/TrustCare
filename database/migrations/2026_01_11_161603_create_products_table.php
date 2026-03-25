@@ -14,7 +14,9 @@ return new class extends Migration
         $table->id();
         $table->string('serial_number')->unique(); // الرقم التسلسلي
         $table->string('name'); // اسم المنتج
-        $table->string('image'); // مسار صورة المنتج
+        $table->string('image');
+        $table->decimal('price', 10, 2)->default(0); // جديد: لإصلاح خطأ price
+        $table->integer('quantity')->default(0);    // جديد: لإصلاح خطأ quantity
         $table->timestamps();
     });
 }

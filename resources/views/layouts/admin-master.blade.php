@@ -3,92 +3,163 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
-    <link rel="icon" type="image/png" href="{{ asset('image/logo-icon.png') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | TrustCare</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="{{ asset('image/logo-icon.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 
 <body>
-    <aside class="sidebar">
-        {{-- Professional Logo Area --}}
+
+    {{-- Overlay --}}
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    {{-- ===================== SIDEBAR ===================== --}}
+    <div class="sidebar" id="mainSidebar">
+
         <div class="sidebar-header">
-            <div class="logo-wrapper">
-                <img src="{{ asset('image/logo-icon.png') }}" alt="TrustCare Logo">
-            </div>
-            <h3 class="brand-name">TrustCare <span class="admin-badge">Admin</span></h3>
+            <img src="{{ asset('image/logo-icon.png') }}" alt="TrustCare Logo">
+            <h3>TrustCare <span class="admin-tag">Admin</span></h3>
         </div>
 
+        {{-- Admin user info --}}
+        <div class="sidebar-user-info">
+            <div class="admin-avatar-circle">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+            </div>
+            <div>
+                <div class="user-name">{{ Auth::user()->name }}</div>
+                <div class="user-role">
+                    <i class="fas fa-circle"></i> Online
+                </div>
+            </div>
+        </div>
 
+        <ul class="sidebar-menu">
 
-        {{-- Navigation Menu --}}
-        <nav class="sidebar-menu" style="margin-top: 20px; display: flex; flex-direction: column;">
+            <li class="menu-section-title">Management</li>
 
-            <li class="nav-item">
+            <li>
                 <a href="{{ route('admin.home') }}"
-                    style="display: flex; align-items: center; padding: 15px 25px; color: {{ request()->routeIs('admin.home') ? '#e91e63' : 'rgba(255,255,255,0.7)' }}; text-decoration: none; background: {{ request()->routeIs('admin.home') ? 'rgba(255,255,255,0.05)' : 'transparent' }}; border-left: {{ request()->routeIs('admin.home') ? '4px solid #e91e63' : 'none' }}; transition: 0.3s;">
-                    <i class="fas fa-th-large" style="margin-right: 15px; width: 20px;"></i>
+                    class="{{ request()->routeIs('admin.home') ? 'active' : '' }}">
+                    <i class="fas fa-th-large"></i>
                     <span>Home</span>
                 </a>
             </li>
-            <li class="nav-item">
+
+            <li>
                 <a href="{{ route('admin.workers') }}"
-                    style="display: flex; align-items: center; padding: 15px 25px; color: {{ request()->routeIs('admin.workers') ? '#e91e63' : 'rgba(255,255,255,0.7)' }}; text-decoration: none; background: {{ request()->routeIs('admin.workers') ? 'rgba(255,255,255,0.05)' : 'transparent' }}; border-left: {{ request()->routeIs('admin.workers') ? '4px solid #e91e63' : 'none' }}; transition: 0.3s;">
-                    <i class="fas fa-users-cog" style="margin-right: 15px; width: 20px;"></i>
+                    class="{{ request()->routeIs('admin.workers') ? 'active' : '' }}">
+                    <i class="fas fa-users-cog"></i>
                     <span>Workers Control</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{{ route('admin.orders.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.orders.index') ? 'active' : '' }}">
-                    <i class="fas fa-clipboard-list"></i>
-                    <span class="menu-title">Spare parts requests</span>
 
-                    @if (isset($newOrdersCount) && $newOrdersCount > 0)
-                        <span class="badge-count">{{ $newOrdersCount }}</span>
+            <li>
+                <a href="{{ route('admin.orders.index') }}"
+                    class="{{ request()->routeIs('admin.orders.index') ? 'active' : '' }}">
+                    <i class="fas fa-tools"></i>
+                    <span>Spare Parts Requests</span>
+                    @php $count = Auth::user()->unreadNotifications->count(); @endphp
+                    @if ($count > 0)
+                        <span class="menu-notif-badge">{{ $count }}</span>
                     @endif
                 </a>
             </li>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            {{-- Admin Profile Section --}}
-            <div class="admin-profile">
-                <div class="admin-info">
-                    <div class="admin-avatar">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                    </div>
-                    <div class="admin-details">
-                        <span class="admin-name">{{ Auth::user()->name }}</span>
-                        <span class="admin-status"><i class="fas fa-circle"></i> Online</span>
-                    </div>
-                </div>
 
-                <form action="{{ route('logout') }}" method="POST" class="logout-form">
+            <li class="logout-item">
+                <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                    <button type="submit">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
                     </button>
                 </form>
+            </li>
+
+        </ul>
+    </div>
+
+    {{-- ===================== MAIN CONTENT ===================== --}}
+    <div class="main-content" id="mainContent">
+
+        {{-- Top Navigation Bar --}}
+        <div class="top-nav">
+            <div class="top-nav-left">
+                <button class="menu-toggle-btn" onclick="toggleSidebar()" id="menuToggleBtn">
+                    <i class="fas fa-bars" id="menuToggleIcon"></i>
+                    Menu
+                </button>
+                <div class="breadcrumb-nav">
+                    <i class="fas fa-home" style="color: #94a3b8;"></i>
+                    <span class="separator">/</span>
+                    <strong>@yield('page-title', 'Dashboard')</strong>
+                </div>
             </div>
 
-        </nav>
-    </aside>
+            <div class="top-nav-right">
 
-    <div class="main-content">
-        @yield('content')
+                {{-- Notifications bell with count --}}
+                @php $notifCount = Auth::user()->unreadNotifications->count(); @endphp
+                <a href="{{ route('admin.orders.index') }}" class="notif-btn">
+                    <i class="fas fa-bell" style="font-size: 15px;"></i>
+                    @if($notifCount > 0)
+                        <span class="notif-count">{{ $notifCount }}</span>
+                    @endif
+                </a>
+
+                {{-- Role badge --}}
+                <span class="role-badge">
+                    <i class="fas fa-shield-alt" style="margin-right: 5px; font-size: 10px;"></i>
+                    Administrator
+                </span>
+
+                {{-- Avatar with initial --}}
+                <div class="top-nav-avatar">
+                    <div class="avatar-circle">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    </div>
+                    <span>{{ Auth::user()->name }}</span>
+                </div>
+
+            </div>
+        </div>
+
+        {{-- Page Content --}}
+        <div class="content-area">
+            @yield('content')
+        </div>
+
     </div>
+
+    @yield('scripts')
+
+    <script>
+        let sidebarOpen = true;
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            const mainContent = document.getElementById('mainContent');
+            const overlay = document.getElementById('sidebarOverlay');
+            const icon = document.getElementById('menuToggleIcon');
+
+            sidebarOpen = !sidebarOpen;
+
+            if (sidebarOpen) {
+                sidebar.classList.remove('hidden');
+                mainContent.classList.remove('expanded');
+                overlay.classList.remove('visible');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                sidebar.classList.add('hidden');
+                mainContent.classList.add('expanded');
+                overlay.classList.add('visible');
+                icon.style.transform = 'rotate(90deg)';
+            }
+        }
+    </script>
+
 </body>
 
 </html>

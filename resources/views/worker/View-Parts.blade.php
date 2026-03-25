@@ -49,8 +49,8 @@
 
                             <div class="quantity-selector" style="display: none; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ddd;">
                                 <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Quantité:</label>
-                                <input type="number" name="quantities[{{ $part->id }}]" value="1" min="1"
-                                       max="{{ $part->quantity }}" class="qty-input"
+                                <input type="number" name="quantities[{{ $part->id }}]" value="max" min="1"
+                                       max="{{ $part->quantity}}" class="qty-input"
                                        onclick="event.stopPropagation();"> </div>
                         </div>
                     </div>

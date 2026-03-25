@@ -82,7 +82,7 @@ class WorkerController extends Controller
         // إرجاع البيانات بصيغة JSON ليفهمها كود الـ JavaScript في الصفحة
         return response()->json($product);
     }
-   public function storeSpareRequest(Request $request, $productId)
+    public function storeSpareRequest(Request $request, $productId)
     {
         // التأكد من اختيار قطع غيار
         if (!$request->has('selected_parts')) {
@@ -109,5 +109,19 @@ class WorkerController extends Controller
         ]);
 
         return redirect()->route('worker.dashboard')->with('success', 'Order sent to Admin successfully!');
+    }
+    public function showExitVoucher()
+    {
+        // جلب آخر طلب لهذا العامل حالته "prepared"
+        $order = SparePartOrder::where('status', 'prepared')
+            ->latest()
+            ->first();
+
+        if (!$order) {
+            // إذا لم يجد طلباً، بدلاً من 403، يفضل إعادته برسالة تنبيه
+            return redirect()->route('worker.dashboard')->with('error', 'No vouchers available at the moment.');
+        }
+
+        return view('worker.exit-v', compact('order'));
     }
 }

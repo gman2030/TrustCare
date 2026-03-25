@@ -1,6 +1,10 @@
 @extends('layouts.Supplychain-master')
 <link rel="stylesheet" href="{{ asset('css/edit.css') }}">
 @section('content')
+    {{-- ربط خط Inter و Material Icons --}}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-xl-11">
@@ -122,97 +126,131 @@
                                     </div>
                                 </form>
                                 <br>
+
+                                {{-- =============================================
+                                     جدول Existing Components - تصميم جديد
+                                     ============================================= --}}
                                 <div class="parts-list-mono border-top mt-5 pt-4">
-                                    <h2 class="fw-bold mb-3 text-muted text-uppercase">Existing Components</h2>
-                                    <br>
+
+                                    {{-- عنوان القسم --}}
+                                    <div class="ec-section-header">
+                                        <h3 class="ec-section-title">
+                                            Existing Components
+                                            <span class="ec-count">{{ $product->spareParts->count() }} Items</span>
+                                        </h3>
+                                    </div>
+
                                     <form action="{{ route('spare-parts.bulkUpdate') }}" method="POST">
                                         @csrf
                                         @method('PUT')
-                                        <div class="table-responsive">
-                                            <table class="table custom-show-table align-middle">
+
+                                        {{-- جدول بتصميم جديد --}}
+                                        <div class="ec-table-wrapper">
+                                            <table class="ec-table">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 15%;">Spare Part</th>
-                                                        <th style="width: 15%;">Name</th>
-                                                        <th class="text-center" style="width: 15%;">Quantity</th>
-                                                        <th class="text-center" style="width: 15%;">Unit Price (DZ)</th>
-                                                        <th class="text-center" style="width: 15%;">The Condition</th>
-                                                        <th class="text-center">Action</th>
+                                                        <th style="width:70px;">Image</th>
+                                                        <th>Part Name</th>
+                                                        <th class="text-center">Quantity</th>
+                                                        <th class="text-center">Unit Price (DZ)</th>
+                                                        <th class="text-center">Status</th>
+                                                        <th class="text-right">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @forelse($product->spareParts as $part)
-                                                        <tr>
-                                                            <td>
-                                                                <div class="text-center">
-                                                                    <img src="{{ $part->image ? asset('uploads/parts/' . $part->image) : asset('assets/no-image.png') }}"
-                                                                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;"
-                                                                        alt="Part Image">
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="fw-bold text-dark fs-6">{{ $part->name }}
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <input type="number"
-                                                                    name="existing_parts[{{ $part->id }}][quantity]"
-                                                                    value="{{ $part->quantity }}"
-                                                                    class="form-control text-center shadow-sm mx-auto"
-                                                                    style="width: 80px;">
-                                                            </td>
-                                                            <td>
-                                                                <input type="number" step="0.01"
-                                                                    name="existing_parts[{{ $part->id }}][price]"
-                                                                    value="{{ $part->price }}"
-                                                                    class="form-control text-center mx-auto"
-                                                                    style="width: 100px;">
-                                                            </td>
-                                                            <td class="text-center">
-                                                                @if ($part->quantity >= 7)
-                                                                    <span
-                                                                        class="badge-status text-success border border-success px-3 py-1 rounded-pill"
-                                                                        style="font-size: 11px; background: #e8f5e9;"><i
-                                                                            class="fas fa-check-circle me-1"></i>Available</span>
-                                                                @elseif($part->quantity <= 6 && $part->quantity > 0)
-                                                                    <span
-                                                                        class="badge-status text-warning border border-warning px-3 py-1 rounded-pill"
-                                                                        style="font-size: 11px; background: #fff8e1;"><i
-                                                                            class="fas fa-exclamation-triangle me-1"></i>Limited</span>
-                                                                @else
-                                                                    <span
-                                                                        class="badge-status text-danger border border-danger px-3 py-1 rounded-pill"
-                                                                        style="font-size: 11px; background: #ffebee;"><i
-                                                                            class="fas fa-times-circle me-1"></i>Unavailable</span>
-                                                                @endif
-                                                            </td>
-                                                            <td class="text-end">
-                                                                <button type="button" class="btn text-danger"
-                                                                    onclick="deletePart({{ $part->id }})">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
+                                                    <tr class="ec-row">
+                                                        {{-- صورة القطعة --}}
+                                                        <td>
+                                                            <div class="ec-img"
+                                                                 style="background-image: url('{{ $part->image ? asset('uploads/parts/' . $part->image) : asset('assets/no-image.png') }}')">
+                                                            </div>
+                                                        </td>
+
+                                                        {{-- الاسم --}}
+                                                        <td>
+                                                            <span class="ec-part-name">{{ $part->name }}</span>
+                                                        </td>
+
+                                                        {{-- الكمية قابلة للتعديل --}}
+                                                        <td class="text-center">
+                                                            <input type="number"
+                                                                   name="existing_parts[{{ $part->id }}][quantity]"
+                                                                   value="{{ $part->quantity }}"
+                                                                   min="0"
+                                                                   class="ec-input"
+                                                                   onclick="event.stopPropagation();">
+                                                        </td>
+
+                                                        {{-- السعر قابل للتعديل --}}
+                                                        <td class="text-center">
+                                                            <input type="number"
+                                                                   name="existing_parts[{{ $part->id }}][price]"
+                                                                   value="{{ $part->price }}"
+                                                                   step="0.01"
+                                                                   min="0"
+                                                                   class="ec-input"
+                                                                   onclick="event.stopPropagation();">
+                                                        </td>
+
+                                                        {{-- الحالة --}}
+                                                        <td class="text-center">
+                                                            @if($part->quantity >= 7)
+                                                                <span class="ec-badge ec-available">
+                                                                    <span class="ec-dot"></span> Available
+                                                                </span>
+                                                            @elseif($part->quantity >=1)
+                                                                <span class="ec-badge ec-limited">
+                                                                    <span class="ec-dot"></span> Limited
+                                                                </span>
+                                                            @else
+                                                                <span class="ec-badge ec-unavailable">
+                                                                    <span class="ec-dot"></span> Unavailable
+                                                                </span>
+                                                            @endif
+                                                        </td>
+
+                                                        {{-- زر الحذف --}}
+                                                        <td class="text-right">
+                                                            <button type="button"
+                                                                    class="ec-delete-btn"
+                                                                    onclick="deletePart({{ $part->id }})"
+                                                                    title="Delete Component">
+                                                                <svg class="ec-trash-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                                          stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
                                                     @empty
-                                                        <tr>
-                                                            <td colspan="6" class="text-center py-5">
-                                                                <i
-                                                                    class="fas fa-box-open fa-3x opacity-25 mb-3 d-block text-muted"></i>
-                                                                <p class="text-muted fw-bold">No components linked yet.</p>
-                                                            </td>
-                                                        </tr>
+                                                    <tr>
+                                                        <td colspan="6" class="ec-empty">
+                                                            <i class="fas fa-box-open fa-2x mb-2 d-block opacity-25"></i>
+                                                            No components linked yet.
+                                                        </td>
+                                                    </tr>
                                                     @endforelse
                                                 </tbody>
                                             </table>
-                                            <br>
-                                            <br>
                                         </div>
-                                        @if ($product->spareParts->count() > 0)
-                                            <button type="submit" class="btn-mono-light w-100 mt-4">Update Inventory
-                                                Only</button>
-                                        @endif
+
+                                        {{-- footer الجدول --}}
+                                        <div class="ec-table-footer">
+                                            <p class="ec-table-count">
+                                                Showing {{ $product->spareParts->count() }} components
+                                            </p>
+                                            @if($product->spareParts->count() > 0)
+                                                <button type="submit" class="ec-save-btn">
+                                                    Save Changes
+                                                </button>
+                                            @endif
+                                        </div>
+
                                     </form>
                                 </div>
+                                {{-- نهاية جدول Existing Components --}}
+
                             </div>
                         </div>
                     </div>
@@ -226,8 +264,9 @@
         @csrf
         @method('DELETE')
     </form>
+
     <script>
-        /* الـ Java Script الخاص بك كما هو دون أي تغيير */
+        /* الـ JavaScript الخاص بك كما هو دون أي تغيير */
         function toggleSpareParts() {
             const section = document.getElementById('sparePartsSection');
             section.style.display = (section.style.display === "none") ? "block" : "none";
@@ -258,7 +297,7 @@
         function deletePart(id) {
             if (confirm('Are you sure?')) {
                 let form = document.getElementById('global-delete-form');
-                form.action = '/spare-parts/' + id; // المسار التقليدي للحذف
+                form.action = '/spare-parts/' + id;
                 form.submit();
             }
         }

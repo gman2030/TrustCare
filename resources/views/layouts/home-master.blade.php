@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Worker Panel | TrustCare</title>
-
+    <title>User Panel | TrustCare</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" type="image/png" href="{{ asset('image/logo-icon.png') }}">
-    <link rel="stylesheet" href="{{ asset('css/worker.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 </head>
 
 <body>
@@ -18,52 +17,71 @@
 
     {{-- ===================== SIDEBAR ===================== --}}
     <div class="sidebar" id="mainSidebar">
-
         <div class="sidebar-header">
             <img src="{{ asset('image/logo-icon.png') }}" alt="TrustCare Logo">
             <h3>TrustCare</h3>
-            <span class="worker-tag">Worker Area</span>
+            <small>User Area</small>
         </div>
 
-        {{-- User info --}}
+        {{-- User quick info --}}
         <div class="sidebar-user-info">
             <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=1b2d95&color=fff"
-                alt="{{ Auth::user()->name }}">
+                 alt="{{ Auth::user()->name }}">
             <div>
                 <div class="user-name">{{ Auth::user()->name }}</div>
-                <div class="user-role">
-                    <i class="fas fa-circle"></i> Online
-                </div>
+                <div class="user-role">User</div>
             </div>
         </div>
 
         <ul class="sidebar-menu">
 
-            <li class="menu-section-title">Work</li>
+            <li class="menu-section-title">Main</li>
 
             <li>
-                <a href="{{ route('worker.dashboard') }}"
-                    class="{{ request()->routeIs('worker.dashboard') ? 'active' : '' }}">
-                    <i class="fas fa-tasks"></i>
-                    <span>My Tasks</span>
+                <a
+                   class="{{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
                 </a>
             </li>
 
             <li>
-                <a href="{{ route('worker.spare') }}" class="{{ request()->routeIs('worker.spare') ? 'active' : '' }}">
-                    <i class="fas fa-tools"></i>
-                    <span>Spare Parts Inventory</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('exit.voucher') }}">
-                    <i class="fas fa-receipt"></i>
-                    <span>exit voucher</span>
+                <a
+                   class="{{ request()->routeIs('user.orders') ? 'active' : '' }}">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>My Orders</span>
                     {{-- <span class="menu-badge">3</span> --}}
                 </a>
             </li>
+
+            <li>
+                <a
+                   class="{{ request()->routeIs('user.requests') ? 'active' : '' }}">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>My Requests</span>
+                </a>
+            </li>
+
+            <li class="menu-section-title">Settings</li>
+
+            <li>
+                <a
+                   class="{{ request()->routeIs('user.profile') ? 'active' : '' }}">
+                    <i class="fas fa-user-circle"></i>
+                    <span>My Profile</span>
+                </a>
+            </li>
+
+            <li>
+                <a
+                   class="{{ request()->routeIs('user.settings') ? 'active' : '' }}">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+
             <li class="logout-item">
-                <form action="{{ route('logout') }}" method="POST" id="logout-form-sidebar">
+                <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit">
                         <i class="fas fa-sign-out-alt"></i>
@@ -71,7 +89,6 @@
                     </button>
                 </form>
             </li>
-
         </ul>
     </div>
 
@@ -88,31 +105,29 @@
                 <div class="breadcrumb-nav">
                     <i class="fas fa-home" style="color: #94a3b8;"></i>
                     <span class="separator">/</span>
-                    <strong>@yield('page-title', 'My Tasks')</strong>
+                    <strong>@yield('page-title', 'Dashboard')</strong>
                 </div>
             </div>
 
             <div class="top-nav-right">
-
-                {{-- Bell --}}
+                {{-- Notification --}}
                 <div class="notif-btn">
                     <i class="fas fa-bell" style="font-size: 15px;"></i>
                     <span class="notif-dot"></span>
                 </div>
 
-                {{-- Role badge --}}
+                {{-- Role --}}
                 <span class="role-badge">
-                    <i class="fas fa-wrench" style="margin-right: 5px; font-size: 10px;"></i>
-                    Maintenance Technician
+                    <i class="fas fa-user" style="margin-right: 5px; font-size: 10px;"></i>
+                    User
                 </span>
 
                 {{-- Avatar --}}
                 <div class="top-nav-avatar">
                     <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=1b2d95&color=fff"
-                        alt="{{ Auth::user()->name }}">
+                         alt="{{ Auth::user()->name }}">
                     <span>{{ Auth::user()->name }}</span>
                 </div>
-
             </div>
         </div>
 
@@ -149,7 +164,6 @@
             }
         }
     </script>
-
 </body>
 
 </html>

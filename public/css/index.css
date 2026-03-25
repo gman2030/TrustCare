@@ -164,7 +164,6 @@
  }
 
  .btn-confirm {
-     background: var(--primary-color);
      color: rgb(255, 255, 255);
      background-color: #1b2d95;
      padding: 12px 30px;
@@ -174,6 +173,37 @@
      cursor: pointer;
      box-shadow: 0 4px 15px rgba(27, 45, 149, 0.3);
      transition: all 0.3s ease;
+
+ }
+
+ .action-bar {
+     padding: 15px 25px;
+     background: #fdfdfd;
+     border-top: 1px solid #f1f5f9;
+     display: flex;
+     justify-content: flex-end;
+     align-items: center;
+ }
+
+ .btn-ready {
+     background: var(--supply-primary);
+     color: rgb(0, 0, 0);
+     border: none;
+     padding: 10px 25px;
+     border-radius: 8px;
+     cursor: pointer;
+     font-weight: 600;
+     transition: all 0.3s ease;
+     box-shadow: 0 2px 5px rgb(0, 0, 0);
+ }
+
+ .btn-ready:hover {
+     background: #1b2d95;
+     /* لون أغمق عند المرور */
+     transform: translateY(-2px);
+     /* رفعة بسيطة تعطي شعوراً بالتفاعل */
+     box-shadow: 0 4px 12px rgba(5, 53, 150, 0.3);
+     color: #fff;
  }
 
  .btn-confirm:hover {

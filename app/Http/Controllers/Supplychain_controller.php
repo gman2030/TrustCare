@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\SparePart;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use App\Models\SparePartOrder;
 
 class Supplychain_controller extends Controller
 {
@@ -168,7 +169,8 @@ class Supplychain_controller extends Controller
     public function show($id)
     {
         $product = Product::with('spareParts')->findOrFail($id);
-        return view('supplychain.show', compact('product'));
+        $spareParts = $product->spareParts;
+        return view('supplychain.show', compact('product', 'spareParts'));
     }
     public function updateSparePart(Request $request, $id)
     {
@@ -194,5 +196,23 @@ class Supplychain_controller extends Controller
             ]);
         }
         return back()->with('success', 'تم تحديث المخزون بنجاح');
+    }
+    public function receivedRequests()
+    {
+        // جلب الطلبات التي حالتها 'accepted' فقط
+        $orders = SparePartOrder::where('status', 'accepted')
+            ->latest()
+            ->get();
+
+        return view('supplychain.requests', compact('orders'));
+    }
+    // دالة تحديث حالة الطلب إلى "جاهز" وإصدار ظرف الخروج
+    public function markAsPrepared($id)
+    {
+        $order = SparePartOrder::findOrFail($id);
+        $order->status = 'prepared'; // تأكد أن الكلمة مطابقة تماماً لما في شرط الـ 403
+        $order->save();
+
+        return back()->with('success', 'Order is ready for collection!');
     }
 }

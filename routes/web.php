@@ -12,6 +12,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\viewcontroller;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\WorkerProductController;
+
 Route::get('/login-sign-up', [AuthController::class, 'showForm'])->name('login.view');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -78,4 +79,15 @@ Route::get('/worker/product-view/{id}', [viewcontroller::class, 'show'])->name('
 Route::get('/admin/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
 Route::post('/worker/product/{id}/store', [WorkerController::class, 'storeSpareRequest'])->name('worker.spare.confirm');
 Route::get('/admin/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
+Route::post('/admin/orders/{id}/accept', [AdminOrderController::class, 'acceptOrder'])->name('admin.orders.accept');
+Route::get('/supplychain/requests', [Supplychain_controller::class, 'receivedRequests'])->name('supplychain.requests');
+Route::get('/', function () {
+    return view('n1page');
+});
+// مسار واحد واضح ومحدد
+Route::get('/exit-voucher', [App\Http\Controllers\WorkerController::class, 'showExitVoucher'])->name('exit.voucher');
+Route::get('/exit-voucher', [WorkerController::class, 'showExitVoucher'])->name('exit.voucher');
+Route::post('/worker/confirm-exit', [AuthController::class, 'confirmExit'])->name('worker.confirm.exit');
+// مسار تحديث حالة الطلب إلى "جاهز"
+Route::post('/supply-chain/prepare/{id}', [Supplychain_controller::class, 'markAsPrepared'])->name('supply.prepare');
 
