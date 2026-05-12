@@ -138,11 +138,47 @@ class Supplychain_controller extends Controller
     }
 
     // ... keeping the rest of your logic functions ...
-    public function updateStock($id, $action) { /* ... */ }
-    public function destroy($id) { /* ... */ }
-    public function show($id) { /* ... */ }
-    public function updateSparePart(Request $request, $id) { /* ... */ }
-    public function receivedRequests() { /* ... */ }
-    public function markAsPrepared($id) { /* ... */ }
-    public function rejectBySupply(Request $request, $id) { /* ... */ }
+    public function updateStock($id, $action)
+    { /* ... */
+    }
+    public function destroy($id)
+    {
+        // جلب المنتج مع قطع الغيار المرتبطة به لضمان حذف الصور
+        $product = Product::with('spareParts')->findOrFail($id);
+
+        // 1. مسح صور قطع الغيار من التخزين السحابي/المحلي لعدم ملء المساحة
+        foreach ($product->spareParts as $part) {
+            if ($part->image) {
+                Storage::disk('public')->delete($part->image);
+            }
+        }
+
+        // 2. مسح صورة المنتج الأساسية
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+
+        // 3. حذف قطع الغيار من قاعدة البيانات أولاً
+        $product->spareParts()->delete();
+
+        // 4. حذف المنتج نفسه
+        $product->delete();
+
+        return redirect()->route('supply.dashboard')->with('success', 'تم حذف المنتج وكافة ملحقاته بنجاح!');
+    }
+    public function show($id)
+    { /* ... */
+    }
+    public function updateSparePart(Request $request, $id)
+    { /* ... */
+    }
+    public function receivedRequests()
+    { /* ... */
+    }
+    public function markAsPrepared($id)
+    { /* ... */
+    }
+    public function rejectBySupply(Request $request, $id)
+    { /* ... */
+    }
 }

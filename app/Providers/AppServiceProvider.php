@@ -26,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
         if ($forceHttps || (is_string($appUrl) && str_starts_with($appUrl, 'https://'))) {
             URL::forceScheme('https');
         }
-        Config::set('app.debug', true);
+        
     }
 }
