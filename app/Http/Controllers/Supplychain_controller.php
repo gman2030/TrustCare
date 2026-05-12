@@ -75,25 +75,44 @@ class Supplychain_controller extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
+        // 1. تحديث بيانات المنتج الأساسية
         $product->name = $request->name;
         $product->serial_number = $request->serial_number;
 
         if ($request->hasFile('image')) {
-            // Delete old image if exists
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }
             $product->image = $request->file('image')->store('products', 'public');
         }
-
         $product->save();
 
+        // 2. تحديث قطع الغيار الموجودة مسبقاً (إن وجدت)
         if ($request->has('existing_parts')) {
             foreach ($request->existing_parts as $partId => $data) {
                 SparePart::where('id', $partId)->update([
                     'quantity' => $data['quantity'] ?? 0,
                     'price'    => $data['price'] ?? 0,
                 ]);
+            }
+        }
+
+        // 3. إضافة قطع الغيار الجديدة (هذا الجزء كان ناقصاً)
+        if ($request->has('new_parts')) {
+            foreach ($request->new_parts as $partData) {
+                if (!empty($partData['name'])) {
+                    $path = null;
+                    if (isset($partData['image']) && $partData['image']->isValid()) {
+                        $path = $partData['image']->store('parts', 'public');
+                    }
+
+                    $product->spareParts()->create([
+                        'name' => $partData['name'],
+                        'image' => $path, // تأكد أن اسم الحقل في الداتابيز 'image'
+                        'quantity' => 0,
+                        'price' => 0
+                    ]);
+                }
             }
         }
 
