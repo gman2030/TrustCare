@@ -39,9 +39,9 @@
             <table class="table custom-table align-middle m-0">
                 <thead>
                     <tr>
-                        <th style="width: 50%;">Product Details</th>
-                        <th style="width: 30%;">Serial Number</th>
-                        <th style="width:15%; ">Edit</th>
+                        <th style="width: 40%;">Product Details</th>
+                        <th style="width: 40%;" class="text-center">Serial Number</th>
+                        <th style="width: 20%;" class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,32 +51,34 @@
                             <div class="d-flex align-items-center cursor-pointer group-hover"
                                 onclick="openPartsModal('{{ $product->id }}', '{{ $product->name }}')">
                                 <div class="product-img-box me-3 shadow-sm">
-                                    <img src="{{ $product->image_url }}"
-                                        alt="">
+                                    <img src="{{ $product->image_url }}" alt="" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">
                                 </div>
                                 <div class="product-info">
-                                    <a href="{{ route('supply.show', $product->id) }}"
-                                        class="text-decoration-none fw-bold text-dark">
+                                    <a href="{{ route('supply.show', $product->id) }}" class="text-decoration-none fw-bold text-dark">
                                         {{ $product->name }}
                                     </a>
-
                                 </div>
                             </div>
                         </td>
+                        <!-- تم إعادة الرقم التسلسلي هنا -->
+                        <td class="text-center">
+                            <span class="badge bg-light text-dark border px-3 py-2" style="font-family: monospace; font-size: 14px;">
+                                {{ $product->serial_number }}
+                            </span>
+                        </td>
                         <td class="text-center">
                             <div class="d-flex justify-content-center gap-2">
-                                <!-- زر التعديل (الموجود لديك مسبقاً) -->
-                                <a href="{{ route('supply.edit', $product->id) }}" class="btn-action-edit" title="Edit Product">
+                                <!-- زر التعديل -->
+                                <a href="{{ route('supply.edit', $product->id) }}" class="btn-edit-action" title="Edit">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
 
-                                <!-- زر الحذف الجديد -->
+                                <!-- زر الحذف بتصميم متناسق مع التعديل -->
                                 <form action="{{ route('supply.destroy', $product->id) }}" method="POST"
-                                    onsubmit="return confirm('هل أنت متأكد من حذف هذا المنتج وجميع قطع الغيار التابعة له؟')">
+                                    onsubmit="return confirm('هل أنت متأكد من حذف هذا المنتج؟')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-action-delete" title="Delete Product"
-                                        style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer;">
+                                    <button type="submit" class="btn-delete-action" title="Delete">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>

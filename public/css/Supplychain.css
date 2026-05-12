@@ -13,18 +13,46 @@
      --radius: 14px;
  }
 
- .btn-action-delete {
-     transition: all 0.3s ease;
+ /* تنسيق موحد للأزرار لضمان عدم تخريب الصف */
+ .btn-edit-action,
+ .btn-delete-action {
+     width: 35px;
+     height: 35px;
      display: flex;
      align-items: center;
      justify-content: center;
+     border-radius: 8px;
+     transition: all 0.2s ease;
+     border: 1px solid var(--border);
+     cursor: pointer;
+     text-decoration: none;
  }
 
- .btn-action-delete:hover {
-     background-color: #dc2626 !important;
-     /* لون أحمر أغمق عند التمرير */
-     transform: scale(1.1);
-     box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+ .btn-edit-action {
+     background-color: #f1f5f9;
+     color: var(--primary);
+ }
+
+ .btn-delete-action {
+     background-color: #fff1f2;
+     color: #e11d48;
+ }
+
+ .btn-edit-action:hover {
+     background-color: var(--primary);
+     color: white;
+ }
+
+ .btn-delete-action:hover {
+     background-color: #e11d48;
+     color: white;
+     box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
+ }
+
+ /* لمنع تمدد الصورة وتخريب الصف */
+ .product-img-box img {
+     max-width: 50px;
+     max-height: 50px;
  }
 
  * {
