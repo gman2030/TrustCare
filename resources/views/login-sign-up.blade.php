@@ -1,10 +1,9 @@
-<!-- resources/views/login-sign up.blade.php -->
 <!DOCTYPE html>
 <html lang="en" dir="ltr" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrustCare</title>
+    <title>TrustCare - Login & Signup</title>
     <link rel="icon" type="image/png" href="{{ asset('image/logo-icon.png') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -135,6 +134,26 @@
         [dir="rtl"] * {
             font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
         }
+
+        /* Error messages styling */
+        .text-danger {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: -8px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        [dir="rtl"] .text-danger {
+            text-align: right;
+        }
+
+        .text-success {
+            color: #10b981;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -174,14 +193,14 @@
 
         <div class="cover">
             <div class="front">
-                <img src="image/login page.PNG" alt="">
+                <img src="{{ asset('image/login page.PNG') }}" alt="">
                 <div class="text">
                     <span class="text-1" id="cover-text-1">Trust us with the warranty on your devices</span><br>
                     <span class="text-2" id="cover-text-2">If you do not have an account, create one now</span>
                 </div>
             </div>
             <div class="back">
-                <img class="backImg" src="image/sing up page2.jpg" alt="">
+                <img class="backImg" src="{{ asset('image/sing up page2.jpg') }}" alt="">
                 <div class="text">
                     <span class="text-3" id="cover-text-3">Trust us with the warranty on your devices</span><br>
                     <span class="text-4" id="cover-text-4">Create an account now and join our community</span>
@@ -196,24 +215,32 @@
                 <div class="title" id="login-title">Login</div>
 
                 @if ($errors->any())
-                    <div class="text login-text" style="color:red; text-align:center;">
+                    <div class="text-danger">
                         {{ $errors->first() }}
                     </div>
                 @endif
 
                 <div class="input-boxes">
-                    <form action="{{ route('login') }}" method="POST">
+                    <form action="{{ route('login') }}" method="POST" id="loginForm">
                         @csrf
                         <div class="input-box">
                             <i class="fas fa-envelope"></i>
                             <input type="email" name="email" id="login-email-input"
                                 placeholder="Enter your email" required>
                         </div>
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
                         <div class="input-box">
                             <i class="fas fa-lock"></i>
                             <input type="password" name="password" id="login-password-input"
                                 placeholder="Enter your password" required>
                         </div>
+                        @error('password')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
                         <div class="button input-box">
                             <input type="submit" id="login-btn" value="Login">
                         </div>
@@ -230,34 +257,56 @@
                 <div class="title" id="signup-title">Sign up</div>
 
                 @if(session('success'))
-                    <div class="text sign-up-text" style="color:green; text-align:center;">
+                    <div class="text-success">
                         {{ session('success') }}
                     </div>
                 @endif
 
                 <div class="input-boxes">
-                    <form action="{{ route('register') }}" method="POST">
+                    <form action="{{ route('register') }}" method="POST" id="registerForm">
                         @csrf
                         <div class="input-box">
                             <i class="fas fa-user"></i>
                             <input type="text" name="name" id="signup-name-input"
                                 placeholder="Enter your username" required>
                         </div>
+                        @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
                         <div class="input-box">
                             <i class="fas fa-envelope"></i>
                             <input type="email" name="email" id="signup-email-input"
                                 placeholder="Enter your email" required>
                         </div>
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
                         <div class="input-box">
                             <i class="fas fa-phone"></i>
                             <input type="tel" name="phone" id="signup-phone-input"
                                 placeholder="Phone number 213" required>
                         </div>
+                        @error('phone')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
                         <div class="input-box">
                             <i class="fas fa-lock"></i>
                             <input type="password" name="password" id="signup-password-input"
                                 placeholder="Enter your password" required>
                         </div>
+
+                        <div class="input-box">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="password_confirmation" id="signup-password-confirm-input"
+                                placeholder="Confirm your password" required>
+                        </div>
+                        @error('password')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
                         <div class="button input-box">
                             <input type="submit" id="signup-btn" value="Sign up">
                         </div>
@@ -273,7 +322,7 @@
     </div>
 
     <script>
-        
+        // Translations object with all text for each language
         const translations = {
             en: {
                 dir: "ltr", lang: "en", flag: "🇬🇧", label: "English",
@@ -292,6 +341,7 @@
                 "signup-email-input":    "Enter your email",
                 "signup-phone-input":    "Phone number 213",
                 "signup-password-input": "Enter your password",
+                "signup-password-confirm-input": "Confirm your password",
                 "signup-btn":            "Sign up",
                 "have-account-text":     "Already have an account?",
                 "login-link":            "Login now"
@@ -313,6 +363,7 @@
                 "signup-email-input":    "Entrez votre e-mail",
                 "signup-phone-input":    "Numéro de téléphone 213",
                 "signup-password-input": "Entrez votre mot de passe",
+                "signup-password-confirm-input": "Confirmez votre mot de passe",
                 "signup-btn":            "S'inscrire",
                 "have-account-text":     "Vous avez déjà un compte ?",
                 "login-link":            "Connectez-vous"
@@ -334,6 +385,7 @@
                 "signup-email-input":    "أدخل بريدك الإلكتروني",
                 "signup-phone-input":    "رقم الهاتف 213",
                 "signup-password-input": "أدخل كلمة المرور",
+                "signup-password-confirm-input": "تأكيد كلمة المرور",
                 "signup-btn":            "إنشاء حساب",
                 "have-account-text":     "هل لديك حساب بالفعل؟",
                 "login-link":            "سجّل دخولك"
@@ -344,7 +396,8 @@
         const placeholderKeys = [
             "login-email-input", "login-password-input",
             "signup-name-input", "signup-email-input",
-            "signup-phone-input", "signup-password-input"
+            "signup-phone-input", "signup-password-input",
+            "signup-password-confirm-input"
         ];
 
         // Elements that use value (submit buttons)
@@ -355,12 +408,16 @@
         // ─────────────────────────────────────────────
         function toggleLangDropdown(e) {
             e.stopPropagation();
-            document.getElementById('langSwitcher').classList.toggle('open');
+            const switcher = document.getElementById('langSwitcher');
+            if (switcher) {
+                switcher.classList.toggle('open');
+            }
         }
 
         document.addEventListener('click', function (e) {
-            if (!e.target.closest('#langSwitcher')) {
-                document.getElementById('langSwitcher').classList.remove('open');
+            const switcher = document.getElementById('langSwitcher');
+            if (switcher && !e.target.closest('#langSwitcher')) {
+                switcher.classList.remove('open');
             }
         });
 
@@ -371,10 +428,24 @@
             const t = translations[lang];
             if (!t) return;
 
-            const root = document.getElementById('html-root');
-            root.setAttribute('dir', t.dir);
-            root.setAttribute('lang', t.lang);
+            // Save current form values before changing language
+            const formValues = {
+                loginEmail: document.getElementById('login-email-input')?.value || '',
+                loginPassword: document.getElementById('login-password-input')?.value || '',
+                signupName: document.getElementById('signup-name-input')?.value || '',
+                signupEmail: document.getElementById('signup-email-input')?.value || '',
+                signupPhone: document.getElementById('signup-phone-input')?.value || '',
+                signupPassword: document.getElementById('signup-password-input')?.value || '',
+                signupPasswordConfirm: document.getElementById('signup-password-confirm-input')?.value || ''
+            };
 
+            const root = document.getElementById('html-root');
+            if (root) {
+                root.setAttribute('dir', t.dir);
+                root.setAttribute('lang', t.lang);
+            }
+
+            // Update text content for all translatable elements
             Object.keys(t).forEach(function (key) {
                 if (['dir', 'lang', 'flag', 'label'].includes(key)) return;
 
@@ -390,17 +461,29 @@
                 }
             });
 
-            // Update switcher button
-            document.getElementById('currentFlag').textContent = t.flag;
-            document.getElementById('currentLangLabel').textContent = t.label;
+            // Restore form values
+            if (formValues.loginEmail) document.getElementById('login-email-input').value = formValues.loginEmail;
+            if (formValues.loginPassword) document.getElementById('login-password-input').value = formValues.loginPassword;
+            if (formValues.signupName) document.getElementById('signup-name-input').value = formValues.signupName;
+            if (formValues.signupEmail) document.getElementById('signup-email-input').value = formValues.signupEmail;
+            if (formValues.signupPhone) document.getElementById('signup-phone-input').value = formValues.signupPhone;
+            if (formValues.signupPassword) document.getElementById('signup-password-input').value = formValues.signupPassword;
+            if (formValues.signupPasswordConfirm) document.getElementById('signup-password-confirm-input').value = formValues.signupPasswordConfirm;
 
-            // Update active state
+            // Update switcher button
+            const currentFlag = document.getElementById('currentFlag');
+            const currentLangLabel = document.getElementById('currentLangLabel');
+            if (currentFlag) currentFlag.textContent = t.flag;
+            if (currentLangLabel) currentLangLabel.textContent = t.label;
+
+            // Update active state in dropdown
             document.querySelectorAll('.lang-option').forEach(function (opt) {
                 opt.classList.toggle('active', opt.dataset.lang === lang);
             });
 
             // Close dropdown
-            document.getElementById('langSwitcher').classList.remove('open');
+            const switcher = document.getElementById('langSwitcher');
+            if (switcher) switcher.classList.remove('open');
 
             // Save preference
             localStorage.setItem('trustcare_lang', lang);
