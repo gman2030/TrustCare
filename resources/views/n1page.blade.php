@@ -318,11 +318,21 @@
         document.addEventListener('DOMContentLoaded', function() {
             const videoModal = document.getElementById('videoModal');
             const videoElement = document.getElementById('mainVideo');
+            const videoSrc = videoElement.querySelector('source').src;
 
-            // إيقاف الفيديو عند إغلاق النافذة المنبثقة
+            // عند فتح الـ modal: أعد تحميل الفيديو وشغّله
+            videoModal.addEventListener('shown.bs.modal', function() {
+                videoElement.load();
+                videoElement.play().catch(function() {
+                    // بعض المتصفحات تمنع التشغيل التلقائي — لا بأس، الزر موجود
+                });
+            });
+
+            // عند إغلاق الـ modal: أوقف الفيديو وأعده للبداية
             videoModal.addEventListener('hidden.bs.modal', function() {
                 videoElement.pause();
-                videoElement.currentTime = 0; // إعادة الفيديو للبداية
+                videoElement.currentTime = 0;
+                videoElement.load();
             });
         });
     </script>
