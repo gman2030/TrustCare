@@ -51,7 +51,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('Proposedsolutions') }}">
+                <a class="nav-link" href="{{ route('user.solutions') }}">
                     <i class="fas fa-lightbulb me-2"></i>
                     Proposed solutions
                 </a>
