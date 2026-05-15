@@ -283,3 +283,21 @@
          transform: translateY(0);
      }
  }
+
+ #videoModal .modal-content {
+     outline: none;
+ }
+
+ #videoModal .ratio {
+     background-color: #000;
+     border: 2px solid rgba(255, 255, 255, 0.1);
+ }
+
+ .btn-close-white {
+     opacity: 0.8;
+     transition: opacity 0.3s;
+ }
+
+ .btn-close-white:hover {
+     opacity: 1;
+ }

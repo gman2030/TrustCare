@@ -65,10 +65,31 @@
                     </p>
                     <div class="d-flex align-items-center gap-4">
                         <a href="{{ route('login.view') }}" class="btn-main" id="hero-cta">Get Started</a>
-                        <a href="#" class="btn-ghost">
+
+                        {{-- زر مشاهدة الفيديو المحدث --}}
+                        <a href="#" class="btn-ghost" data-bs-toggle="modal" data-bs-target="#videoModal">
                             <span class="material-symbols-outlined">play_circle</span>
                             <span id="hero-watch">Watch the video</span>
                         </a>
+                    </div>
+
+                    {{-- النافذة المنبثقة للفيديو --}}
+                    <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content bg-transparent border-0">
+                                <div class="modal-header border-0 p-0 justify-content-end">
+                                    <button type="button" class="btn-close btn-close-white mb-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-0">
+                                    <div class="ratio ratio-16x9 shadow-lg rounded-4 overflow-hidden">
+                                        <video id="mainVideo" controls>
+                                            <source src="{{ asset('videos/your-video.mp4') }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6 position-relative fade-up" style="animation-delay: 0.2s;">
@@ -152,72 +173,72 @@
                 lang: "en",
                 flag: "🇬🇧",
                 label: "English",
-                "nav-login":    "Login",
-                "hero-title":   "Get peace of mind with <span>TrustCare.</span>",
-                "hero-desc":    "A unified platform for providing after-sales services and assisting our customers, all in one sleek interface.",
-                "hero-cta":     "Get Started",
-                "hero-watch":   "Watch the video",
-                "stat-title":   "100% Accuracy",
-                "stat-sub":     "Real-time tracking",
-                "feat-title":   "Why Choose Our System?",
-                "feat-sub":     "Engineered for businesses that demand efficiency and speed.",
-                "f1-title":     "Field Service",
-                "f1-desc":      "Forget the hassle of transporting bulky or sensitive products. Through our platform, you can request certified technicians to visit your location. We bring the tools and expertise to your doorstep.",
-                "f2-title":     "Transparency & Trust",
-                "f2-desc":      "We eliminate concerns about \"hidden costs.\" We provide price lists for spare parts and repair costs via downloadable invoices, ensuring fair transactions and long-term relationships.",
-                "f3-title":     "Enterprise Security",
-                "f3-desc":      "Advanced permissions system ensures only the right people access sensitive data, keeping your warranty information safe.",
-                "footer-cta":   "Ready to organize your assets?",
-                "footer-btn":   "Start Now for Free",
-                "footer-copy":  "© TrustCare – Trust us with the warranty on your devices."
+                "nav-login": "Login",
+                "hero-title": "Get peace of mind with <span>TrustCare.</span>",
+                "hero-desc": "A unified platform for providing after-sales services and assisting our customers, all in one sleek interface.",
+                "hero-cta": "Get Started",
+                "hero-watch": "Watch the video",
+                "stat-title": "100% Accuracy",
+                "stat-sub": "Real-time tracking",
+                "feat-title": "Why Choose Our System?",
+                "feat-sub": "Engineered for businesses that demand efficiency and speed.",
+                "f1-title": "Field Service",
+                "f1-desc": "Forget the hassle of transporting bulky or sensitive products. Through our platform, you can request certified technicians to visit your location. We bring the tools and expertise to your doorstep.",
+                "f2-title": "Transparency & Trust",
+                "f2-desc": "We eliminate concerns about \"hidden costs.\" We provide price lists for spare parts and repair costs via downloadable invoices, ensuring fair transactions and long-term relationships.",
+                "f3-title": "Enterprise Security",
+                "f3-desc": "Advanced permissions system ensures only the right people access sensitive data, keeping your warranty information safe.",
+                "footer-cta": "Ready to organize your assets?",
+                "footer-btn": "Start Now for Free",
+                "footer-copy": "© TrustCare – Trust us with the warranty on your devices."
             },
             fr: {
                 dir: "ltr",
                 lang: "fr",
                 flag: "🇫🇷",
                 label: "Français",
-                "nav-login":    "Connexion",
-                "hero-title":   "La tranquillité d'esprit avec <span>TrustCare.</span>",
-                "hero-desc":    "Une plateforme unifiée pour fournir des services après-vente et accompagner nos clients, dans une interface moderne et intuitive.",
-                "hero-cta":     "Commencer",
-                "hero-watch":   "Voir la vidéo",
-                "stat-title":   "100% de Précision",
-                "stat-sub":     "Suivi en temps réel",
-                "feat-title":   "Pourquoi choisir notre système ?",
-                "feat-sub":     "Conçu pour les entreprises qui exigent efficacité et rapidité.",
-                "f1-title":     "Service sur site",
-                "f1-desc":      "Oubliez le transport de vos appareils encombrants. Via notre plateforme, des techniciens certifiés se déplacent directement chez vous avec les outils nécessaires.",
-                "f2-title":     "Transparence & Confiance",
-                "f2-desc":      "Nous éliminons les coûts cachés en vous fournissant des listes de prix détaillées pour les pièces détachées et les réparations, via des factures téléchargeables.",
-                "f3-title":     "Sécurité Entreprise",
-                "f3-desc":      "Un système de permissions avancé garantit que seules les bonnes personnes accèdent aux données sensibles, protégeant vos informations de garantie.",
-                "footer-cta":   "Prêt à organiser vos actifs ?",
-                "footer-btn":   "Commencer gratuitement",
-                "footer-copy":  "© TrustCare – Faites-nous confiance pour la garantie de vos appareils."
+                "nav-login": "Connexion",
+                "hero-title": "La tranquillité d'esprit avec <span>TrustCare.</span>",
+                "hero-desc": "Une plateforme unifiée pour fournir des services après-vente et accompagner nos clients, dans une interface moderne et intuitive.",
+                "hero-cta": "Commencer",
+                "hero-watch": "Voir la vidéo",
+                "stat-title": "100% de Précision",
+                "stat-sub": "Suivi en temps réel",
+                "feat-title": "Pourquoi choisir notre système ?",
+                "feat-sub": "Conçu pour les entreprises qui exigent efficacité et rapidité.",
+                "f1-title": "Service sur site",
+                "f1-desc": "Oubliez le transport de vos appareils encombrants. Via notre plateforme, des techniciens certifiés se déplacent directement chez vous avec les outils nécessaires.",
+                "f2-title": "Transparence & Confiance",
+                "f2-desc": "Nous éliminons les coûts cachés en vous fournissant des listes de prix détaillées pour les pièces détachées et les réparations, via des factures téléchargeables.",
+                "f3-title": "Sécurité Entreprise",
+                "f3-desc": "Un système de permissions avancé garantit que seules les bonnes personnes accèdent aux données sensibles, protégeant vos informations de garantie.",
+                "footer-cta": "Prêt à organiser vos actifs ?",
+                "footer-btn": "Commencer gratuitement",
+                "footer-copy": "© TrustCare – Faites-nous confiance pour la garantie de vos appareils."
             },
             ar: {
                 dir: "rtl",
                 lang: "ar",
                 flag: "🇩🇿",
                 label: "العربية",
-                "nav-login":    "تسجيل الدخول",
-                "hero-title":   "راحة البال مع <span>TrustCare.</span>",
-                "hero-desc":    "منصة موحدة لتقديم خدمات ما بعد البيع ودعم عملائنا، كل ذلك في واجهة أنيقة وسهلة الاستخدام.",
-                "hero-cta":     "ابدأ الآن",
-                "hero-watch":   "شاهد الفيديو",
-                "stat-title":   "دقة 100%",
-                "stat-sub":     "تتبع في الوقت الفعلي",
-                "feat-title":   "لماذا تختار نظامنا؟",
-                "feat-sub":     "مُصمَّم للشركات التي تتطلب الكفاءة والسرعة.",
-                "f1-title":     "خدمة ميدانية",
-                "f1-desc":      "تخلص من عناء نقل أجهزتك الكبيرة أو الحساسة. عبر منصتنا، يمكنك طلب تقنيين معتمدين لزيارة موقعك مباشرةً بكل الأدوات والخبرات اللازمة.",
-                "f2-title":     "الشفافية والثقة",
-                "f2-desc":      "نُزيل القلق من التكاليف الخفية بتوفير قوائم أسعار تفصيلية لقطع الغيار وتكاليف الإصلاح، عبر فواتير قابلة للتحميل لضمان معاملات عادلة.",
-                "f3-title":     "أمان المؤسسات",
-                "f3-desc":      "نظام صلاحيات متقدم يضمن أن الأشخاص المناسبين فقط يصلون إلى البيانات الحساسة، مع الحفاظ على سلامة معلومات الضمان الخاصة بك.",
-                "footer-cta":   "هل أنت مستعد لتنظيم أصولك؟",
-                "footer-btn":   "ابدأ مجانًا الآن",
-                "footer-copy":  "© TrustCare – ثق بنا في ضمان أجهزتك."
+                "nav-login": "تسجيل الدخول",
+                "hero-title": "راحة البال مع <span>TrustCare.</span>",
+                "hero-desc": "منصة موحدة لتقديم خدمات ما بعد البيع ودعم عملائنا، كل ذلك في واجهة أنيقة وسهلة الاستخدام.",
+                "hero-cta": "ابدأ الآن",
+                "hero-watch": "شاهد الفيديو",
+                "stat-title": "دقة 100%",
+                "stat-sub": "تتبع في الوقت الفعلي",
+                "feat-title": "لماذا تختار نظامنا؟",
+                "feat-sub": "مُصمَّم للشركات التي تتطلب الكفاءة والسرعة.",
+                "f1-title": "خدمة ميدانية",
+                "f1-desc": "تخلص من عناء نقل أجهزتك الكبيرة أو الحساسة. عبر منصتنا، يمكنك طلب تقنيين معتمدين لزيارة موقعك مباشرةً بكل الأدوات والخبرات اللازمة.",
+                "f2-title": "الشفافية والثقة",
+                "f2-desc": "نُزيل القلق من التكاليف الخفية بتوفير قوائم أسعار تفصيلية لقطع الغيار وتكاليف الإصلاح، عبر فواتير قابلة للتحميل لضمان معاملات عادلة.",
+                "f3-title": "أمان المؤسسات",
+                "f3-desc": "نظام صلاحيات متقدم يضمن أن الأشخاص المناسبين فقط يصلون إلى البيانات الحساسة، مع الحفاظ على سلامة معلومات الضمان الخاصة بك.",
+                "footer-cta": "هل أنت مستعد لتنظيم أصولك؟",
+                "footer-btn": "ابدأ مجانًا الآن",
+                "footer-copy": "© TrustCare – ثق بنا في ضمان أجهزتك."
             }
         };
 
@@ -235,7 +256,7 @@
         }
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', function (e) {
+        document.addEventListener('click', function(e) {
             if (!e.target.closest('#langSwitcher')) {
                 document.getElementById('langSwitcher').classList.remove('open');
             }
@@ -255,7 +276,7 @@
             root.setAttribute('lang', t.lang);
 
             // 2. Update all translated elements
-            Object.keys(t).forEach(function (key) {
+            Object.keys(t).forEach(function(key) {
                 if (['dir', 'lang', 'flag', 'label'].includes(key)) return;
 
                 const el = document.getElementById(key);
@@ -269,11 +290,11 @@
             });
 
             // 3. Update switcher button display
-            document.getElementById('currentFlag').textContent  = t.flag;
+            document.getElementById('currentFlag').textContent = t.flag;
             document.getElementById('currentLangLabel').textContent = t.label;
 
             // 4. Update active state on options
-            document.querySelectorAll('.lang-option').forEach(function (opt) {
+            document.querySelectorAll('.lang-option').forEach(function(opt) {
                 opt.classList.toggle('active', opt.dataset.lang === lang);
             });
 
@@ -287,13 +308,25 @@
         // ─────────────────────────────────────────────
         //  RESTORE SAVED LANGUAGE ON PAGE LOAD
         // ─────────────────────────────────────────────
-        (function () {
+        (function() {
             const saved = localStorage.getItem('trustcare_lang');
             if (saved && translations[saved]) {
                 setLang(saved);
             }
         })();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoModal = document.getElementById('videoModal');
+            const videoElement = document.getElementById('mainVideo');
+
+            // إيقاف الفيديو عند إغلاق النافذة المنبثقة
+            videoModal.addEventListener('hidden.bs.modal', function() {
+                videoElement.pause();
+                videoElement.currentTime = 0; // إعادة الفيديو للبداية
+            });
+        });
     </script>
 
 </body>
+
 </html>
